@@ -76,6 +76,8 @@ class UserController extends Controller
 
         $r->session()->regenerateToken();
 
+        session_destroy();
+
         return redirect('/');
 
     }

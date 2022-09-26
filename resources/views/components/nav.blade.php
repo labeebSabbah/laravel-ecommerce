@@ -4,8 +4,31 @@
             <div class="col-lg-10" style="display: flex;justify-content: center;gap: 20px;">
                 <ul class="navbar-nav ms-auto" style="display: flex !important;justify-content: center !important;width: 100%;">
                     <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Cart</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Orders</a></li>
+                    <li class="nav-item" class="position-relative">
+                        <a class="nav-link" href="/cart">
+                            Cart
+                            @if (Auth::check())
+                            <span class="badge text-bg-danger">
+                                <?php 
+                                    $cart = $_SESSION['cart'] ?? [];
+                                    $num = 0;
+                                    foreach ($cart as $p) {
+                                        $num += $p['quantity'];
+                                    }
+                                ?>
+                                {{ $num }}
+                            </span>
+                            @endif
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            Orders
+                            @if (Auth::check())
+                            <span class="badge text-bg-danger">99</span>
+                            @endif
+                        </a>
+                    </li>
                 </ul>
             </div>
             <ul class="navbar-nav ms-auto">

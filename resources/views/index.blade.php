@@ -46,7 +46,7 @@
                             <span class="badge rounded-pill text-bg-secondary">{{ $p->subCategory->sub_category_name }}</span></p>
                         <h4 class="card-title">{{ $p->name }} ({{ $p->size }})</h4>
                         <div class="d-flex">
-                            <button class="btn btn-dark" type="button">Add to cart </button>
+                            <button class="btn btn-dark" type="button" onclick="cart({{ $p->id }})">Add to cart </button>
                         </div>
                     </div>
                 </div>
@@ -105,6 +105,23 @@
                 $('#search-btn').click();
             }
         });
+
+        function cart(id) {
+            $.ajax({
+                url: '/cart/add',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    id: id
+                },
+                type: 'POST',
+                success: function(response) {
+                    document.location.reload();
+                },
+                error: function(response) {
+                    document.location = '/login';
+                }
+            });
+        }
 
     </script>
 </body>
