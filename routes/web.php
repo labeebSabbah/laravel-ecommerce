@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
+session_start();
 
 /*
 |--------------------------------------------------------------------------
@@ -29,12 +30,22 @@ Route::middleware(['customer', 'nBan'])->group(function () {
     Route::get('/search', function() {
         return view('search');
     });
+
+    Route::middleware('auth')->group(function () {
+
+        Route::get('/cart', function() {
+            return view('cart');
+        });
+        Route::post('/cart/add', [MainController::class, 'add']);
+        Route::post('/cart/delete', [MainController::class, 'delete']);
+
+    });
         
     Route::middleware('guest')->group(function () {
         
         Route::get('/login', function () {
             return view('user.login');
-        });
+        })->name('login');
             
         Route::get('/register', function () {
             return view('user.register');
