@@ -36,6 +36,14 @@
 <body>
     @include('components.nav')
 
+    @if ($errors->any())
+    <ul class="alert alert-danger" role="alert">
+        @foreach ($errors->all() as $error)
+        <li class="text-danger">{{ $error }}</li>
+        @endforeach
+    </ul>
+    @endif
+
         @if (!isset($_SESSION['cart']) || count($_SESSION['cart']) == 0)
 
         <div id="container">
@@ -78,11 +86,65 @@
 
         </x-table>
 
-        @endif
-
         <div id="checkout" class="text-bg-dark">
-            <button type="button" class="btn btn-lg btn-secondary">Checkout</button>
+            <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target="#address">Checkout</button>
         </div>
+  
+        <div class="modal fade" id="address" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="checkoutLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form class="modal-content" method="POST" action="/order/new">
+                    @csrf   
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Checkout</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="address1">Address Line 1 <span class="text-danger">*</span></label>
+                            <input type="text" name="address1" id="address1" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="address2">Address Line 2</label>
+                            <input type="text" name="address2" id="address2" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="city">City <span class="text-danger">*</span></label>
+                            <input type="text" name="city" id="city" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="state">State</label>
+                            <input type="text" name="state" id="state" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="country">Country <span class="text-danger">*</span></label>
+                            <select name="country" class="form-select" id="country">
+                                <option selected></option>
+                                @include('components/countries')
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="postal">Postal Code <span class="text-danger">*</span></label>
+                            <input type="number" name="postal" id="postal" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="payment">Payment Method <span class="text-danger">*</span></label>
+                            <div class="form-check" style="margin-right: 40px;">
+                                <input class="" type="radio" name="payment" id="payment" value="cash" checked>
+                                <label class="form-check-label" for="payment">
+                                  Cash on Delivery
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-dark">Place Order</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @endif
 
         <script>
             function dlt(id) {
