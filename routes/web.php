@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Models\Category;
@@ -38,6 +39,8 @@ Route::middleware(['customer', 'nBan'])->group(function () {
         });
         Route::post('/cart/add', [MainController::class, 'add']);
         Route::post('/cart/delete', [MainController::class, 'delete']);
+
+        Route::post('/order/new', [OrderController::class, 'add']);
 
     });
         

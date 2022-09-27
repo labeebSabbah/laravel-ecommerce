@@ -1,3 +1,9 @@
+@php
+use App\Models\Order;
+if (Auth::check()) {
+    $corder = Order::where('customer_id', Auth::user()->id)->count();
+}
+@endphp
 <nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
     <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span>Brand</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-5"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navcol-5">
@@ -25,7 +31,9 @@
                         <a class="nav-link" href="#">
                             Orders
                             @if (Auth::check())
-                            <span class="badge text-bg-danger">99</span>
+                            <span class="badge text-bg-danger">
+                                {{ $corder }}
+                            </span>
                             @endif
                         </a>
                     </li>
