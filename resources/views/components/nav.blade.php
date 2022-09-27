@@ -28,7 +28,7 @@ if (Auth::check()) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="/orders">
                             Orders
                             @if (Auth::check())
                             <span class="badge text-bg-danger">

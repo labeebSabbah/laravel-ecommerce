@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+
+    public function index() {
+        $orders = Order::with('user')->get();
+        return view('admin.orders', ['orders' => $orders]);
+    }
+
+    public function cindex() {
+        return view('orders', ['orders' => Order::with('user')->where('customer_id', Auth::user()->id)->get()]);
+    }
+
     public function add(Request $r) {
         $r->validate([
             'address1' => 'required|string',
@@ -44,5 +54,11 @@ class OrderController extends Controller
         return  redirect('/cart');
     }
 
+    public function update(Request $r) {
+        $o = Order::find($r->id);
+        $o->status = $r->status;
+        $o->save();
+        return redirect('/admin/orders');
+    }
     
 }

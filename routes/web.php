@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\MainController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
+use App\Models\Order;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 session_start();
 
 /*
@@ -40,6 +41,7 @@ Route::middleware(['customer', 'nBan'])->group(function () {
         Route::post('/cart/add', [MainController::class, 'add']);
         Route::post('/cart/delete', [MainController::class, 'delete']);
 
+        Route::get('/orders', [OrderController::class, 'cindex']);
         Route::post('/order/new', [OrderController::class, 'add']);
 
     });
@@ -75,13 +77,11 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/admin/categories', [CategoryController::class, 'index']);
         Route::post('/admin/category/create', [CategoryController::class, 'createCat']);
-        Route::get('/admin/category/{id}', function ($id) {
-            $cat = Category::find($id);
-            return view('admin.category', ['cat' => $cat]);
-        });
+        Route::get('/admin/category/{id}', function ($id) {return view('admin.category', ['cat' => Category::find($id)]);});
         Route::put('/admin/category/{id}/update', [CategoryController::class, 'updateCat']);
         Route::delete('/admin/category/{id}/delete', [CategoryController::class, 'deleteCat']);
         Route::get('admin/category/{id}/subCategories', [CategoryController::class, 'subCats']);
+
         Route::post('/admin/subCategory/create', [CategoryController::class, 'createSub']);
         Route::put('/admin/subCategory/{id}/update', [CategoryController::class, 'updateSub']);
         Route::delete('/admin/subCategory/{id}/delete', [CategoryController::class, 'deleteSub']);
@@ -89,10 +89,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/products', [ProductController::class, 'index']);
         Route::post('/admin/product/create', [ProductController::class, 'create']);
 
-        Route::get('/admin/orders', function () {
-            return view('admin.orders');
-        });
-
+        Route::get('/admin/orders', [OrderController::class, 'index']);
+        Route::get('admin/order/{id}', function ($id) {return view('admin.order', ['o' => Order::find($id)]);});
+        Route::put('/admin/order/{id}/update', [OrderController::class, 'update']);
 
     });
     

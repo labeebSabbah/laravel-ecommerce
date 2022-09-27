@@ -1,8 +1,10 @@
 @php
     use App\Models\User;
     use App\Models\Product;
+    use App\Models\Order;
     $u = User::where('admin', false)->count();
     $p = Product::count();
+    $o = Order::count();
 @endphp
 
 <x-admin>
@@ -64,7 +66,7 @@
                         </div>
                     </a>
                     <div class="px-3">
-                        <h2 class="fw-bold mb-0">99</h2>
+                        <h2 class="fw-bold mb-0">{{ $o }}</h2>
                         <p class="mb-0">Current Orders</p>
                     </div>
                 </div>
