@@ -46,4 +46,24 @@ class MainController extends Controller
         $_SESSION['cart'] = $arr;
     }
 
+    public function search(Request $r) {
+        $products = Product::where('name', 'like' ,"%{$r->name}%")
+        ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
+        ->when($r->category, function ($q) use ($r) {
+            return $q->where('products.category_id', $r->category);
+        })->when($r->subCategory, function ($q) use ($r) {
+            return $q->where('sub_categories.sub_category_name', $r->subCategory);
+        })
+        ->when($r->size, function ($q) use ($r) {
+            return $q->where('size', $r->size);
+        })
+        ->when($r->min, function ($q) use ($r) {
+            return $q->where('price', '>=', $r->min);
+        })
+        ->when($r->max, function ($q) use ($r) {
+            return $q->where('price', '<=', $r->max);
+        })->get();
+        return view('products', ['products' => $products]);
+    }
+
 }

@@ -26,8 +26,8 @@
                 <h2>Got Something in mind ?</h2>
             </div>
         </div>
-        <form class="input-group mb-3" method="GET" action="/search">
-            <input style="padding: 20px" type="text" class="form-control" placeholder="Search for anything" aria-label="Search for anything" aria-describedby="search-btn" id="search" name="q">
+        <form class="input-group mb-3" method="GET" action="/products/search">
+            <input style="padding: 20px" type="text" class="form-control" placeholder="Search for anything" aria-label="Search for anything" aria-describedby="search-btn" id="search" name="name">
             <button class="btn btn-outline-secondary" type="submit" id="search-btn">Search</button>
         </form>          
     </div>
@@ -37,22 +37,7 @@
                 <h2>Check Some of our Products</h2>
             </div>
         </div>
-        <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
-            @foreach ($products as $p)
-            <div class="col">
-                <div class="card"><img class="card-img-top w-100 d-block fit-cover text-bg-dark" style="height: 325px;" src="{{ $p->image }}" width="454" height="200" />
-                    <div class="card-body p-4">
-                        <p class="text-primary card-text mb-0"><span class="badge rounded-pill text-bg-dark">{{ $p->category->category_name }}</span>
-                            <span class="badge rounded-pill text-bg-secondary">{{ $p->subCategory->sub_category_name }}</span></p>
-                        <h4 class="card-title">{{ $p->name }} ({{ $p->size }})</h4>
-                        <div class="d-flex">
-                            <button class="btn btn-dark" type="button" onclick="cart({{ $p->id }})">Add to cart </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
+        @include('components.products')
     </div>
     <footer class="text-center bg-dark">
         <div class="container py-4 py-lg-5">
@@ -103,6 +88,13 @@
             if (event.key === "Enter") {
                 event.preventDefault();
                 $('#search-btn').click();
+            }
+        });
+
+        $('#search-btn').click(function(e){
+            if ($('#search').val() == ""){
+                e.preventDefault();
+                window.document.location = '/products';
             }
         });
 

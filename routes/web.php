@@ -1,13 +1,17 @@
 <?php
 
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Models\SubCategory;
+
 session_start();
 
 /*
@@ -28,10 +32,14 @@ Route::get('/banned', function() {
 Route::middleware(['customer', 'nBan'])->group(function () {
 
     Route::get('/', [MainController::class, 'index']);
-      
-    Route::get('/search', function() {
-        return view('search');
+
+    Route::get('/products', function(){
+        return view('products', [
+            'products'=> Product::with(['category','subCategory'])->get(),
+        ]);
     });
+      
+    Route::get('/products/search', [MainController::class, 'search']);
 
     Route::middleware('auth')->group(function () {
 
@@ -43,6 +51,12 @@ Route::middleware(['customer', 'nBan'])->group(function () {
 
         Route::get('/orders', [OrderController::class, 'cindex']);
         Route::post('/order/new', [OrderController::class, 'add']);
+        Route::get('/order/{id}', function ($id) {
+            $o = Order::findOr($id, function () {return new Order;});
+            if (Auth::user()->id == $o->customer_id) {
+                return view('order', ['o' => $o]);
+            } return redirect('/orders');
+        });
 
     });
         
@@ -88,6 +102,9 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/admin/products', [ProductController::class, 'index']);
         Route::post('/admin/product/create', [ProductController::class, 'create']);
+        Route::get('/admin/product/{id}', function ($id){return view('admin.product', ['p' => Product::with(['category','subCategory'])->find($id)]);});
+        Route::put('/admin/product/{id}/edit', [ProductController::class, 'update']);
+        Route::delete('/admin/product/{id}/delete', [ProductController::class, 'delete']);
 
         Route::get('/admin/orders', [OrderController::class, 'index']);
         Route::get('admin/order/{id}', function ($id) {return view('admin.order', ['o' => Order::find($id)]);});

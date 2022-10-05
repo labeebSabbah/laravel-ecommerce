@@ -13,7 +13,7 @@
 
     <main>
 
-        <aside class="text-bg-dark" id="aside">
+        <aside class="text-bg-dark sticky-top" id="aside">
         
             <h3>Admin Panel</h3>
     

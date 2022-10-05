@@ -5,6 +5,8 @@
     $u = User::where('admin', false)->count();
     $p = Product::count();
     $o = Order::count();
+    $m = 0;
+    foreach(Order::all()as$os){$m+=$os->total;}
 @endphp
 
 <x-admin>
@@ -79,7 +81,7 @@
                         </svg>
                     </div>
                     <div class="px-3">
-                        <h2 class="fw-bold mb-0">203526$</h2>
+                        <h2 class="fw-bold mb-0">{{ $m }}$</h2>
                         <p class="mb-0">Total Money</p>
                     </div>
                 </div>

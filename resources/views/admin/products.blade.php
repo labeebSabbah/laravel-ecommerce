@@ -109,7 +109,7 @@
             <td><div class="badge rounded-pill text-bg-secondary">{{ $p->subCategory->sub_category_name }}</div></td>
             <td><div>{{ $p->price }}$</div></td>
             <td>
-                <button type="button" class="btn btn-secondary">
+                <button type="button" class="btn btn-secondary" onclick="document.location = '/admin/product/' + {{ $p->id }}">
                     View
                 </button>
             </td>

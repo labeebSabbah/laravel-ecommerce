@@ -22,7 +22,7 @@
                 <td>{{ $o->user->name }}</td>
                 <td>{{ date('Y-m-d', strtotime($o->created_at)) }}</td>
                 <td>{{ $o->no_of_items }}</td>
-                <td>{{ $o->total }}</td>
+                <td>{{ $o->total }}$</td>
                 <td>{{ $o->status }}</td>
                 <td><button class="btn btn-dark" type="button" value="{{ $o->id }}" onclick="view(this.value)">View</button></td>
             </tr>

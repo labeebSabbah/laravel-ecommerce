@@ -28,11 +28,16 @@
                 <td>{{ $o->no_of_items }}</td>
                 <td>{{ $o->total }}$</td>
                 <td>{{ $o->status }}</td>
-                <td><button type="button" class="btn-dark btn">View</button></td>
+                <td><button type="button" class="btn-dark btn" onclick="view({{ $o->id }})">View</button></td>
             </tr>
         @endforeach
 
     </x-table>
+    <script>
+        function view(id) {
+            document.location = '/order/' + id;
+        }
+    </script>
     @include('components.script')
 </body>
 </html>
