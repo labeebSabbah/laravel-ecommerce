@@ -48,4 +48,37 @@ class ProductController extends Controller
 
     }
 
+    public function update(Request $r) {
+
+        $r->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'category_id' => 'required|numeric|gt:0',
+            'sub_category_id' => 'required|numeric|gt:0',
+            'price' => 'required|numeric|gt:0',
+            'quantity' => 'required|integer|gt:0',
+            'size' => [
+                'required',
+                Rule::in(['S','M','L','XL','XXL'])
+            ],
+            'image' => 'required|url'
+        ]);
+
+        $p = Product::find($r->id);
+        $p->update($r->all());
+
+        return redirect('/admin/products');
+
+    }
+
+    public function delete(Request $r) {
+
+        $p = Product::find($r->id);
+
+        $p->delete();
+
+        return $p;
+
+    }
+
 }
