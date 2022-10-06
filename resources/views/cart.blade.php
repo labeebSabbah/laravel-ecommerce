@@ -50,7 +50,7 @@
 
             <h2>Your Cart is Empty</h2>
         
-            <button class="btn btn-dark" type="button" onclick="document.location = '/'">Add Some Products</button>
+            <button class="btn btn-dark" type="button" onclick="document.location = '/products'">Add Some Products</button>
 
         </div>
 
@@ -68,7 +68,14 @@
                 </tr>
             </x-slot>
 
+            @php
+                $total = 0;
+            @endphp
+
             @foreach ($_SESSION['cart'] as $pr)
+                @php
+                    $total += $pr['product']->price;
+                @endphp
                 <tr>
                     <td scope="row"><img src="{{ $pr['product']->image }}" alt="image"></td>
                     <td>{{ $pr['product']->name }}</td>
@@ -83,6 +90,11 @@
                     </td>
                 </tr>
             @endforeach
+
+            <tr>
+                <th scope="row" colspan="3">Total Price</th>
+                <th colspan="2">{{ $total }}$</th>
+            </tr>
 
         </x-table>
 
