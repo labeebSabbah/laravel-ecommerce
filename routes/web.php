@@ -41,6 +41,8 @@ Route::middleware(['customer', 'nBan'])->group(function () {
       
     Route::get('/products/search', [MainController::class, 'search']);
 
+    Route::get('/product/{id}', [MainController::class, 'product']);
+
     Route::middleware('auth')->group(function () {
 
         Route::get('/cart', function() {

@@ -24,7 +24,7 @@
         form{height:100vh;position:fixed;overflow:auto;display:block!important;}
         input[type="number"]{width: 100%;}
         .p-3{padding-top:0!important}
-        main{width:76vw;display:flex!important;overflow-x:hidden;}
+        main{width:76vw;display:flex!important;overflow-x:hidden;margin-left:auto;justify-content:center;}
         nav{display:block!important;}
         #open{display:none!important;}#close{display:none!important;}
         }
@@ -108,8 +108,14 @@
 
     </form>
     <main class="flex-nowrap">
-      <div class="pro">
+      <div class="container-fluid pro">
+        @if (!$products->count())
+            <div class="d-flex align-items-center justify-content-center" style="height: 80vh">
+                <h2>No Product was Found</h2>
+            </div>
+        @else
         @include('components.products')
+        @endif
       </div>
     </main>
     @include('components.script')

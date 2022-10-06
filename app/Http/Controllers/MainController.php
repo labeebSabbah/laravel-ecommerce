@@ -47,8 +47,9 @@ class MainController extends Controller
     }
 
     public function search(Request $r) {
-        $products = Product::where('name', 'like' ,"%{$r->name}%")
-        ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
+        $products = Product::when($r->name, function ($q) use ($r) {
+            return $q->where('products.name', 'like' ,"%{$r->name}%");
+        })->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
         ->when($r->category, function ($q) use ($r) {
             return $q->where('products.category_id', $r->category);
         })->when($r->subCategory, function ($q) use ($r) {
@@ -64,6 +65,11 @@ class MainController extends Controller
             return $q->where('price', '<=', $r->max);
         })->get();
         return view('products', ['products' => $products]);
+    }
+
+    public function product($id) {
+        $p = Product::findOrFail($id);
+        return view('product', compact('p'));
     }
 
 }
